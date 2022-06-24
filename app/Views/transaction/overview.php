@@ -65,10 +65,10 @@
                                                 <td>
                                                     <?php
                                                     if ($req['rq_status'] == '50') {
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/update\ class=\"btn btn-success btn-md alert_btn\" data-mode =\"C\"><i class=\"fas fa-share-square\"></i></a>&nbsp";
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/update\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
+                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/confirm\ class=\"btn btn-success btn-md alert_btn\" data-mode =\"C\"><i class=\"fas fa-share-square\"></i></a>&nbsp";
+                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/cancel\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
                                                     } else {
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/update\ class=\"btn btn-primary btn-md alert_btn\" data-mode =\"A\"><i class=\"fas fa-check\"></i> </a>";
+                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/approve\ class=\"btn btn-primary btn-md alert_btn\" data-mode =\"A\"><i class=\"fas fa-check\"></i> </a>";
                                                     }
                                                     ?>
 

@@ -65,4 +65,10 @@ class BaseController extends Controller
 		$result = curl_exec($ch);
 		curl_close($ch);
     }
+
+    public function generateOtp()
+    {
+        $otp = mt_rand();
+        return substr($otp,0,6);
+    }
 }

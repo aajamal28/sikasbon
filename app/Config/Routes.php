@@ -45,16 +45,18 @@ $routes->group('master', function ($routes) {
 
 $routes->group('transaction', function ($routes) {
     $routes->add('overview', 'Transaction\TransactionController::index');
+    $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
+    $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
 
     $routes->group('request', function ($routes) {
         $routes->add('/', 'Transaction\RequestController::index');
-        $routes->add('/(segment)', 'Transaction\RequestController::detail/$1');
         $routes->post('save', 'Transaction\RequestController::post');
+        $routes->post('process', 'Transaction\RequestController::process_approval');
     });
 
     $routes->group('refund', function ($routes) {
         $routes->add('/', 'Transaction\RefundController::index');
-        $routes->add('/(segment)', 'Transaction\RefundController::detail/$1');
+        $routes->add('/(:segment)/approve', 'Transaction\RefundController::detail/$1');
         $routes->post('save', 'Transaction\RefundController::post');
     });
 });
