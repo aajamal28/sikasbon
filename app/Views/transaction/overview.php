@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <h6 class="text-success text-lg">Total Kasbon : Rp. <?= number_format($sumKasbon) ?></h6>
+                            <h6 class="text-success text-lg">Total Request : Rp. <?= number_format($sumKasbon) ?></h6>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ class RequestMigration extends Migration
         $this->forge->addField([
             'rq_id'    => [
                 'type' => 'CHAR',
-                'constraint' => '15'
+                'constraint' => '16'
             ],
             'rq_no'    => [
                 'type' => 'CHAR',

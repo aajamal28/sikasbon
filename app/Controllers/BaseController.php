@@ -51,24 +51,31 @@ class BaseController extends Controller
         $this->request = \Config\Services::request();
     }
 
-    public function sendMessageTg($telegram_id,$message_text)
+    public function sendMessageTg($telegram_id, $message_text)
     {
         $secret_token = "bot5589037187:AAFqaL-4B-6O2pQTECFplX36ODx6sb2UCxk";
         $url = "https://api.telegram.org/" . $secret_token . "/sendMessage?parse_mode=markdown&chat_id=" . $telegram_id;
-		$url = $url . "&text=" . urlencode($message_text);
-		$ch = curl_init();
-		$optArray = array(
-				CURLOPT_URL => $url,
-				CURLOPT_RETURNTRANSFER => true
-		);
-		curl_setopt_array($ch, $optArray);
-		$result = curl_exec($ch);
-		curl_close($ch);
+        $url = $url . "&text=" . urlencode($message_text);
+        $ch = curl_init();
+        $optArray = array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+        );
+        curl_setopt_array($ch, $optArray);
+        $result = curl_exec($ch);
+        curl_close($ch);
     }
 
     public function generateOtp()
     {
         $otp = mt_rand();
-        return substr($otp,0,6);
+        return substr($otp, 0, 6);
+    }
+
+    public function generateToken($text)
+    {
+        $salt = 'ACC2022';
+        $token = md5($text . $salt, true);
+        return $token;
     }
 }

@@ -53,7 +53,6 @@
                                         <input type="password" class="form-control" id="aprOtp" name="aprOtp" require>
                                     </div>
                                 </div>
-                                <input type="hidden" name="status" value="<?= $status ?>">
                                 <input type="hidden" name="mode" value="<?= $mode ?>">
                             </div>
                             <div class="card-footer text-right">

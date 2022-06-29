@@ -3,6 +3,7 @@
 namespace App\Controllers\Transaction;
 
 use App\Controllers\BaseController;
+use App\Models\ApprovalModel;
 use App\Models\OtpModel;
 use App\Models\RequestModel;
 
@@ -10,12 +11,14 @@ class RequestController extends BaseController
 {
     protected $reqModel;
     protected $otpModel;
+    protected $aprModel;
     //protected $uri =  $this->request->uri->getSegments();
 
     function __construct()
     {
         $this->reqModel = new RequestModel();
         $this->otpModel = new OtpModel();
+        $this->aprModel = new ApprovalModel();
     }
 
     public function index()
@@ -79,11 +82,11 @@ class RequestController extends BaseController
 
     public function approve($id,$mode)
     {
-        $req = $this->reqModel->getRequestByID($id);
+        
         $otp = $this->generateOtp();
         $dataOtp = [
             'otp_id' => uniqid(),
-            'otp_order' => $req['rq_id'],
+            'otp_order' => $id,
             'otp_token' => $otp,
             'otp_date' => date('Y-m-d H:i:s'),
             'otp_status' => '1'
@@ -91,7 +94,20 @@ class RequestController extends BaseController
         $this->otpModel->saveOtp($dataOtp);
         $message = "Berikut adalah OTP anda ".$otp.". Mohon jangan beritahu siapapun!";
         $this->sendMessageTg('453164060',$message);
-        switch ($mode){
+        
+
+        $data['uri'] = $this->request->uri->getSegments();
+        $data['order'] = $id;
+        $data['mode'] = $mode;
+        $data['otp'] = $otp;
+        return view('transaction\approve',$data);
+    }
+
+    public function process_approval()
+    {
+        $post = $this->request->getPost();
+        $req = $this->reqModel->getRequestByID($post['aprOrder']);
+        switch ($post['mode']){
             case 'approve' :
                 $status = $req['rq_status']+100;
                 break;
@@ -105,18 +121,22 @@ class RequestController extends BaseController
                 $status = $req['rq_status']+30;
                 break;
         }
-
-        $data['uri'] = $this->request->uri->getSegments();
-        $data['order'] = $req['rq_id'];
-        $data['status'] = $status;
-        $data['mode'] = $mode;
-        $data['otp'] = $otp;
-        return view('transaction\approve',$data);
-    }
-
-    public function process_approval()
-    {
-        $post = $this->request->getPost();
-        print_r($post);
+        $setApprove = [
+            'rq_status' => $status
+        ];
+        $dataApprove = [
+            'apr_id' => uniqid('apr', false),
+            'apr_order' => $post['aprOrder'],
+            'apr_date' => date('Y-m-d H:i:s'),
+            'apr_usrid' => '002354',
+            'apr_token' => $this->generateToken($post['aprOtp']),
+            'apr_stfrom' => $req['rq_status'],
+            'apr_stto' => $status,
+            'apr_note' => ''
+        ];
+        $this->reqModel->updateRequest($setApprove,$post['aprOrder']);
+        $this->aprModel->saveApprove($dataApprove);
+        session()->setFlashdata("success", "Proses berhasil");
+		return redirect()->to(site_url('/transaction/overview'));
     }
 }

@@ -79,4 +79,9 @@ class RequestModel extends Model
             ->get()
             ->getRowArray();
     }
+
+    public function updateRequest($data,$id)
+    {
+        return $this->db->table($this->table)->update($data, array($this->primaryKey => $id));
+    }
 }
