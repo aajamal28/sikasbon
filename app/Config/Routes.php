@@ -17,7 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Auth');
+$routes->setDefaultController('AuthController');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -35,11 +35,11 @@ $routes->get('/home', 'Home::index');
 
 //custom routes
 $routes->group('master', function ($routes) {
-    $routes->group('item', function ($routes) {
-        $routes->add('list', 'Master\Item::index');
-        $routes->add('add', 'Master\Item::add');
-        $routes->add('/(segment)', 'Master\Item::detail/$1');
-        $routes->post('save', 'Master\Item::save');
+    $routes->group('user', function ($routes) {
+        $routes->add('list', 'Master\UserController::index');
+        $routes->add('register', 'Master\UserController::register');
+        $routes->add('/(segment)', 'Master\UserController::detail/$1');
+        $routes->post('save', 'Master\UserController::save');
     });
 });
 

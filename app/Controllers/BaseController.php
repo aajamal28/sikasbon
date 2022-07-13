@@ -75,7 +75,7 @@ class BaseController extends Controller
     public function generateToken($text)
     {
         $salt = 'ACC2022';
-        $token = md5($text . $salt, true);
+        $token = md5($text . $salt);
         return $token;
     }
 }

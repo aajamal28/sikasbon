@@ -44,9 +44,15 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a href="#" class="nav-link <?php if (isset($uri[1]) && ($uri[1] == 'user'))  echo 'active' ?>">
+              <a href="<?= site_url('master/user/list') ?>" class="nav-link <?php if (isset($uri[1]) && ($uri[1] == 'user' ) && ($uri[2] == 'list'))  echo 'active' ?>">
                 <i class="far fa-circle nav-icon text-primary"></i>
-                <p>User</p>
+                <p>List User</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= site_url('master/user/register') ?>" class="nav-link <?php if (isset($uri[1]) && ($uri[1] == 'user') && ($uri[2] == 'register' ))  echo 'active' ?>">
+                <i class="far fa-circle nav-icon text-primary"></i>
+                <p>Register User</p>
               </a>
             </li>
           </ul>
