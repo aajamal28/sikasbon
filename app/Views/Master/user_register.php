@@ -64,59 +64,63 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card card-border card-secondary">
-                        <div class="card-header">
+                        <!-- <div class="card-header">
                             <h3 class="card-title">Kas Bon</h3>
-                        </div>
-                        <form class="form-horizontal" method="POST" action="<?= base_url(); ?>/transaction/request/save" enctype="multipart/form-data">
+                        </div> -->
+                        <form class="form-horizontal" method="POST" action="<?= base_url(); ?>/master/user/save" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="trNomor" class="col-sm-2 col-form-label text-right">Nomor</label>
+                                    <label for="usrId" class="col-sm-2 col-form-label text-right">NIK</label>
                                     <div class="col-sm-3">
-                                        <input type="text" class="form-control text-center" id="trNomor" placeholder="Generate by sistem" readonly>
+                                        <input type="text" class="form-control" id="usrId" name="usrId" maxlength="6" require>
                                     </div>
-                                    <!--<div class="col-sm-3">
-                                        <input type="text" class="form-control text-right" id="trNomor" name="trNomor" value="" readonly>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <input type="text" class="form-control text-center" value="/" readonly>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <input type="text" class="form-control" id="trMonth" name="trMonth" value="<?= date('m') ?>" readonly>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <input type="text" class="form-control text-center" value="/" readonly>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="trYear" name="trYear" value="<?= date('Y') ?>" readonly>
-                                    </div> -->
                                 </div>
                                 <div class="form-group row">
-                                    <label for="trDate" class="col-sm-2 col-form-label text-right">Tanggal</label>
+                                    <label for="usrName" class="col-sm-2 col-form-label text-right">Nama</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="usrName" name="usrName" require>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="usrDiv" class="col-sm-2 col-form-label text-right">Divisi</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="trDate" name="trDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="trCredit" class="col-sm-2 col-form-label text-right">Nominal</label>
-                                    <div class="col-sm-7">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Rp.</span>
-                                            </div>
-                                            <input type="text" class="form-control text-right nominal" name="trCredit" id="trCredit" placeholder="Input Nominal kasbon" required>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="trType" class="col-sm-2 col-form-label text-right">Type</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="trType" id="trType" required>
+                                        <select class="form-control" name="usrDiv" id="usrDiv" required>
                                             <option value="">- Pilih-</option>
                                             <?php
-                                            foreach ($tr_type as $type) :
+                                            foreach ($divisi as $div) :
+                                            ?>
+                                                <option value="<?= $div['dv_id'] ?>"><?= $div['dv_desc'] ?></option>
+                                            <?php
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="usrMail" class="col-sm-2 col-form-label text-right">Email</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="usrMail" name="usrMail" require>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="usrPhone" class="col-sm-2 col-form-label text-right">No. Hp</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="usrPhone" name="usrPhone" require>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="usrTelegram" class="col-sm-2 col-form-label text-right">Telegram ID.</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="usrTelegram" name="usrTelegram" require>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="usrRole" class="col-sm-2 col-form-label text-right">Type</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" name="usrRole" id="usrRole" required>
+                                            <option value="">- Pilih-</option>
+                                            <?php
+                                            foreach ($role as $type) :
                                             ?>
                                                 <option value="<?= $type['code'] ?>"><?= $type['name'] ?></option>
                                             <?php
@@ -126,24 +130,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="trDesc" class="col-sm-2 col-form-label text-right">Keperluan</label>
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" name="trDesc" id="trDesc" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="trUser" class="col-sm-2 col-form-label text-right">User</label>
+                                    <label for="usrDate" class="col-sm-2 col-form-label text-right">Tanggal</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="trUser" name="trUser" value="002354" readonly>
-                                    </div>
-                                    <label for="trDept" class="col-sm-1 col-form-label ">Divisi</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" id="trDept" name="trDept" value="D01" readonly>
+                                        <input type="text" class="form-control" id="usrDate" name="usrDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-info">Proses</button>
+                                <button type="submit" class="btn btn-info">Simpan</button>
                                 <button type="reset" class="btn btn-warning">Batal</button>
                             </div>
                         </form>
@@ -174,23 +168,5 @@
 <script src="<?= base_url('assets/adminlte/plugin/datatables-buttons/js/buttons.bootstrap4.min.js') ?>"></script>
 <!-- component -->
 <script src="<?= base_url('assets/js/component/main2-1.js') ?>"></script>
-<script>
-    $(document).ready(function() {
-        $("#exampleSelectBorder").change(function() {
-            var tes = document.getElementById("exampleSelectBorder").value;
-            if (tes != 1) {
-                var iss = document.getElementById("inputSample");
-                iss.setAttribute("style", "display : block");
-                var ist = document.getElementById("inputSampleOpt");
-                ist.setAttribute("style", "display : none");
-            } else {
-                var iss = document.getElementById("inputSample");
-                iss.setAttribute("style", "display : none");
-                var ist = document.getElementById("inputSampleOpt");
-                ist.setAttribute("style", "display : block");
-            }
-        });
-    });
-</script>
 
 <?= $this->endSection() ?>

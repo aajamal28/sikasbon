@@ -64,12 +64,21 @@
                                                 <td><?= $req['st_desc'] . " / " . $req['st_desc2'] ?></td>
                                                 <td>
                                                     <?php
-                                                    if ($req['rq_status'] == '50') {
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/confirm\ class=\"btn btn-success btn-md alert_btn\" data-mode =\"C\"><i class=\"fas fa-share-square\"></i></a>&nbsp";
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/cancel\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
+                                                    if (session()->get('role') == 'R03') {
+                                                        if ($req['rq_status'] == '400') {
+                                                            echo "<a href=" . site_url('') . 'transaction/request/paid/' . $req['rq_id'] . "\ class=\"btn btn-info btn-md alert_btn\" data-mode =\"C\"><i class=\"fas fa-money-check-alt\"></i></a>&nbsp";
+                                                            // echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/cancel\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
+                                                        }
                                                     } else {
-                                                        echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/approve\ class=\"btn btn-primary btn-md alert_btn\" data-mode =\"A\"><i class=\"fas fa-check\"></i> </a>";
+                                                        if ($req['rq_status'] == '50') {
+                                                            echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/confirm\ class=\"btn btn-success btn-md alert_btn\" data-mode =\"C\"><i class=\"fas fa-share-square\"></i></a>&nbsp";
+                                                            echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/cancel\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
+                                                        } else {
+                                                            echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/approve\ class=\"btn btn-primary btn-md alert_btn\" data-mode =\"A\"><i class=\"fas fa-check\"></i> </a>";
+                                                            echo "<a href=" . site_url('') . 'transaction/request/' . $req['rq_id'] . "/reject\ class=\"btn btn-danger btn-md alert_btn\" data-mode =\"R\"><i class=\"fas fa-times\"></i></a>";
+                                                        }
                                                     }
+
                                                     ?>
 
                                                 </td>
@@ -117,10 +126,10 @@
         $('.alert_btn').on('click', function() {
             var getLink = $(this).attr('href');
             var mode = $(this).attr('data-mode');
-            if (mode == 'R'){
+            if (mode == 'R') {
                 title = "Cancel request ini?";
-            } else if (mode == 'A'){
-                title = "Approve request ini?"
+            } else if (mode == 'A') {
+                title = "Gasskeun boss?"
             } else {
                 title = "Proses request ini?"
             }
@@ -128,13 +137,12 @@
                 title: title,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Ya',
-                cancelButtonColor: '#3085d6',
-                cancelButtonText: "Batal"
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Gass dahhh',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "Nanan ahhhh"
 
             }).then(result => {
-                //jika klik ya maka arahkan ke proses.php
                 if (result.isConfirmed) {
                     window.location.href = getLink
                 }

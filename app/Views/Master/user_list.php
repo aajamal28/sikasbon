@@ -2,40 +2,11 @@
 
 <?= $this->section('stylecustom') ?>
 <!-- sweet alert 2-->
-<link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/sweetalert2/sweetalert2.min.css') ?>" />
+<link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/sweetalert2/sweetalert2.min.css') ?>" /> 
 <!-- datatable -->
 <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/datatables-responsive/css/responsive.bootstrap4.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/datatables-buttons/css/buttons.bootstrap4.min.css') ?>">
-<style>
-    /* hide-scrollbar::-webkit-scrollbar {
-     display: none;
-    } */
-
-    .data-list {
-        height: 750px;
-        overflow-y: hidden;
-
-    }
-
-    .blink {
-        animation: blink 1s steps(1, end) infinite;
-    }
-
-    @keyframes blink {
-        0% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-</style>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -45,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Master Data User</h1>
+                    <h3>Overview Transaction</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">User</li>
+                        <li class="breadcrumb-item"><a href="#"><?= ucfirst($uri[0]) ?></a></li>
+                        <li class="breadcrumb-item active"><?= ucfirst($uri[1]) ?></a></li>
                     </ol>
                 </div>
             </div>
@@ -59,12 +30,74 @@
 
     <!-- Main content -->
     <section class="content">
-
         <div class="container-fluid">
             <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-border card-primary">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table id="tbTrans" class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>NIK</th>
+                                            <th>Nama</th>
+                                            <th>Divisi</th>
+                                            <th>Email</th>
+                                            <th>Phone / Telegram ID.</th>
+                                            <th>Role</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($user as $usr) :
+                                        ?>
+                                            <tr>
+                                                <td><?= $usr['usr_id']  ?></td>
+                                                <td><?= $usr['usr_name']  ?></td>
+                                                <td><?= $usr['dv_desc']  ?></td>
+                                                <td><?= $usr['usr_mail']  ?></td>
+                                                <td><?= $usr['usr_phone'] . " / " . $usr['usr_telegram']  ?></td>
+                                                <td><?php
+                                                    switch ($usr['usr_role']) {
+                                                        case "R00":
+                                                            echo "Administrator";
+                                                            break;
+                                                        case "R01":
+                                                            echo "User";
+                                                            break;
+                                                        case "R02":
+                                                            echo "Manager";
+                                                            break;
+                                                        case "R03":
+                                                            echo "Kasir";
+                                                            break;
+                                                        case "R04":
+                                                            echo "Acc Ldr.";
+                                                            break;
+                                                        case "R05":
+                                                            echo "Acc. Mgr";
+                                                            break;
+                                                        case "R06":
+                                                            echo "Director";
+                                                            break;
+                                                    }
+
+                                                    ?></td>
+                                                <td><a href="<?= site_url() ?>master/user/<?= $usr['usr_id'] ?>" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a></td>
+                                            </tr>
+                                        <?php
+                                        endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </section>
 </div>
 
@@ -85,24 +118,20 @@
 <script src="<?= base_url('assets/adminlte/plugin/datatables-responsive/js/responsive.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugin/datatables-buttons/js/dataTables.buttons.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugin/datatables-buttons/js/buttons.bootstrap4.min.js') ?>"></script>
-<!-- component -->
-<script src="<?= base_url('assets/js/component/main2-1.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        $("#exampleSelectBorder").change(function() {
-            var tes = document.getElementById("exampleSelectBorder").value;
-            if(tes != 1){
-                var iss = document.getElementById("inputSample");
-                iss.setAttribute("style", "display : block");
-                var ist = document.getElementById("inputSampleOpt");
-                ist.setAttribute("style", "display : none");
-            }else{
-                var iss = document.getElementById("inputSample");
-                iss.setAttribute("style", "display : none");
-                var ist = document.getElementById("inputSampleOpt");
-                ist.setAttribute("style", "display : block");
-            }
-        });
+        $("#tbTrans").DataTable();
+
+        <?php if (!empty(session()->getFlashdata('success'))) { ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: '<?= session()->getFlashdata('success'); ?>',
+                timer: 3000,
+                showConfirmButton: false
+            })
+        <?php } ?>
+
     });
 </script>
 

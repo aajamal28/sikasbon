@@ -14,6 +14,10 @@ class StatusMigration extends Migration
                 'type' => 'CHAR',
                 'constraint' => '4'
             ],
+            'st_type' => [
+                'type' => 'ENUM',
+                'constraint' => '"RQ","RF"'
+            ],
             'st_desc' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50'
@@ -29,7 +33,7 @@ class StatusMigration extends Migration
             ]
         ]);
 
-        $this->forge->addKey('st_code', TRUE);
+        $this->forge->addKey(['st_code','st_type'], TRUE);
 
 		//table generated
 		$this->forge->createTable('tb_status');

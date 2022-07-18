@@ -10,7 +10,7 @@ class UserModel extends Model
     protected $table                = 'tb_user';
     protected $primaryKey           = 'usr_id';
     protected $returnType           = 'array';
-    protected $allowedFields        = ['usr_id','usr_name','usr_dvid','usr_mail','usr_phone','usr_telegram','usr_role','usr_password'];
+    protected $allowedFields        = ['usr_id', 'usr_name', 'usr_dvid', 'usr_mail', 'usr_phone', 'usr_telegram', 'usr_role', 'usr_password'];
 
     public function saveUser($data)
     {
@@ -21,10 +21,12 @@ class UserModel extends Model
     {
         if ($id == false) {
             return $this->table($this->table)
+                ->join('tb_divisi', 'dv_id = usr_dvid')
                 ->get()
                 ->getResultArray();
         } else {
             return $this->table($this->table)
+                ->join('tb_divisi', 'dv_id = usr_dvid')
                 ->where('usr_id', $id)
                 ->get()
                 ->getRowArray();

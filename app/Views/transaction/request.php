@@ -100,11 +100,11 @@
                                 <div class="form-group row">
                                     <label for="trUser" class="col-sm-2 col-form-label text-right">User</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="trUser" name="trUser" value="002354" readonly>
+                                        <input type="text" class="form-control" id="trUser" name="trUser" value="<?= $user ?>" readonly>
                                     </div>
                                     <label for="trDept" class="col-sm-1 col-form-label ">Divisi</label>
                                     <div class="col-sm-3">
-                                        <input type="text" class="form-control" id="trDept" name="trDept" value="D01" readonly>
+                                        <input type="text" class="form-control" id="trDept" name="trDept" value="<?= $dvid ?>" readonly>
                                     </div>
                                 </div>
                             </div>

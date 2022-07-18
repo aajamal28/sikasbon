@@ -42,27 +42,27 @@ class RequestModel extends Model
     {
         if ($status == false and $dept == false) {
             return $this->table($this->table)
-                ->join('tb_status', 'rq_status = st_code')
+                ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
                 ->get()
                 ->getResultArray();
         } elseif ($status == false and $dept != false) {
             return $this->table($this->table)
-                ->join('tb_status', 'rq_status = st_code')
+                ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
                 ->where('rq_dvid', $dept)
                 ->get()
                 ->getResultArray();
         } elseif ($status != false and $dept == false) {
             return $this->table($this->table)
-                ->join('tb_status', 'rq_status = st_code')
+                ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
                 ->where('rq_status', $status)
                 ->get()
                 ->getResultArray();
         } else {
             return $this->table($this->table)
-                ->join('tb_status', 'rq_status = st_code')
+                ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
                 ->where('rq_status', $status)
                 ->where('rq_dvid', $dept)

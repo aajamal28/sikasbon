@@ -21,7 +21,7 @@
             </p>
           </a>
         </li>
-
+        <?php if( session()->get('role') == 'R00' ) : ?>
         <li class="nav-item <?php if($uri[0] == 'master')  echo 'menu-open' ?>">
           <a href="#" class="nav-link <?php if($uri[0] == 'master')  echo 'active' ?>">
             <i class="nav-icon fas fa-database"></i>
@@ -57,7 +57,7 @@
             </li>
           </ul>
         </li>
-
+        <?php endif ?>
         <li class="nav-item <?php if($uri[0] == 'transaction')  echo 'menu-open' ?>">
           <a href="#" class="nav-link <?php if($uri[0] == 'transaction')  echo 'active' ?>">
             <i class="nav-icon fas fa-list"></i>
@@ -128,7 +128,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="<?= site_url('auth/logout') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon text-primary"></i>
                 <p>Logout</p>
               </a>

@@ -31,10 +31,12 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/home', 'Home::index');
+$routes->get('/home', 'Home::index', ['filter' => 'auth']);
+$routes->post('/auth/verify', 'AuthController::auth');
+$routes->get('/auth/logout', 'AuthController::logout');
 
 //custom routes
-$routes->group('master', function ($routes) {
+$routes->group('master', ['filter' => 'auth'] ,function ($routes) {
     $routes->group('user', function ($routes) {
         $routes->add('list', 'Master\UserController::index');
         $routes->add('register', 'Master\UserController::register');
@@ -43,10 +45,12 @@ $routes->group('master', function ($routes) {
     });
 });
 
-$routes->group('transaction', function ($routes) {
+$routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
     $routes->add('overview', 'Transaction\TransactionController::index');
     $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
+    $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
     $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
+    
 
     $routes->group('request', function ($routes) {
         $routes->add('/', 'Transaction\RequestController::index');
