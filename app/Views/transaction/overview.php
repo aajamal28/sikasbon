@@ -60,7 +60,7 @@
                                                 <td><?= $req['rq_date'] ?></td>
                                                 <td><?= $req['rq_desc'] ?></td>
                                                 <td><?= number_format($req['rq_amount']) ?></td>
-                                                <td><?= $req['rq_usrid'] . " / " . $req['dv_desc'] ?></td>
+                                                <td><?= $req['usr_name'] . " / " . $req['dv_desc'] ?></td>
                                                 <td><?= $req['st_desc'] . " / " . $req['st_desc2'] ?></td>
                                                 <td>
                                                     <?php
@@ -129,7 +129,7 @@
             if (mode == 'R') {
                 title = "Cancel request ini?";
             } else if (mode == 'A') {
-                title = "Gasskeun boss?"
+                title = "Approve Request ini?"
             } else {
                 title = "Proses request ini?"
             }
@@ -138,9 +138,9 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Gass dahhh',
+                confirmButtonText: 'Ya',
                 cancelButtonColor: '#d33',
-                cancelButtonText: "Nanan ahhhh"
+                cancelButtonText: "Tidak"
 
             }).then(result => {
                 if (result.isConfirmed) {

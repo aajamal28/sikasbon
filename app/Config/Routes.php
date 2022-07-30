@@ -56,6 +56,7 @@ $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
         $routes->add('/', 'Transaction\RequestController::index');
         $routes->post('save', 'Transaction\RequestController::post');
         $routes->post('process', 'Transaction\RequestController::process_approval');
+        $routes->post('paidprocess', 'Transaction\RequestController::process_paid');
     });
 
     $routes->group('refund', function ($routes) {
@@ -63,6 +64,10 @@ $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
         $routes->add('/(:segment)/approve', 'Transaction\RefundController::detail/$1');
         $routes->post('save', 'Transaction\RefundController::post');
     });
+});
+
+$routes->group('report', ['filter' => 'auth'] ,function ($routes) {
+    $routes->add('cash', 'Report\ReportController::showSaldo');
 });
 
 

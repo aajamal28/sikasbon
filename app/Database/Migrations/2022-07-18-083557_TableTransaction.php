@@ -67,6 +67,6 @@ class TableTransaction extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('tb_transaction');
     }
 }

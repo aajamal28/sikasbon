@@ -44,12 +44,14 @@ class RequestModel extends Model
             return $this->table($this->table)
                 ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
+                ->join('tb_user', 'rq_usrid = usr_id')
                 ->get()
                 ->getResultArray();
         } elseif ($status == false and $dept != false) {
             return $this->table($this->table)
                 ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
+                ->join('tb_user', 'rq_usrid = usr_id')
                 ->where('rq_dvid', $dept)
                 ->get()
                 ->getResultArray();
@@ -57,6 +59,7 @@ class RequestModel extends Model
             return $this->table($this->table)
                 ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
+                ->join('tb_user', 'rq_usrid = usr_id')
                 ->where('rq_status', $status)
                 ->get()
                 ->getResultArray();
@@ -64,6 +67,7 @@ class RequestModel extends Model
             return $this->table($this->table)
                 ->join('tb_status', 'rq_status = st_code and st_type = "RQ"')
                 ->join('tb_divisi', 'rq_dvid = dv_id')
+                ->join('tb_user', 'rq_usrid = usr_id')
                 ->where('rq_status', $status)
                 ->where('rq_dvid', $dept)
                 ->get()
@@ -75,12 +79,14 @@ class RequestModel extends Model
     {
         return $this->table($this->table)
             ->join('tb_status', 'rq_status = st_code')
+            ->join('tb_divisi', 'rq_dvid = dv_id')
+            ->join('tb_user', 'rq_usrid = usr_id')
             ->where('rq_id', $id)
             ->get()
             ->getRowArray();
     }
 
-    public function updateRequest($data,$id)
+    public function updateRequest($data, $id)
     {
         return $this->db->table($this->table)->update($data, array($this->primaryKey => $id));
     }

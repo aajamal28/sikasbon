@@ -20,9 +20,9 @@ class ApprovalModel extends Model
     public function getApprove($order)
     {
         return $this->table($this->table)
-                //->join('tb_user', 'apr_usrid = usr_id')
+                ->join('tb_user', 'apr_usrid = usr_id')
                 ->where('apr_order', $order)
                 ->get()
-                ->getRowArray();
+                ->getResultArray();
     }
 }

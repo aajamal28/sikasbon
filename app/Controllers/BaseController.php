@@ -53,7 +53,7 @@ class BaseController extends Controller
 
     public function sendMessageTg($telegram_id, $message_text)
     {
-        $secret_token = "bot5589037187:AAFqaL-4B-6O2pQTECFplX36ODx6sb2UCxk";
+        $secret_token = "bot5366095775:AAFdvWsrYqEyw5RvGW2tpXqgZu5ucKteR3I";
         $url = "https://api.telegram.org/" . $secret_token . "/sendMessage?parse_mode=markdown&chat_id=" . $telegram_id;
         $url = $url . "&text=" . urlencode($message_text);
         $ch = curl_init();

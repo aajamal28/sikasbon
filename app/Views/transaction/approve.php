@@ -36,6 +36,12 @@
                         <form class="form-horizontal form" method="POST" action="<?= base_url(); ?>/transaction/request/process" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="form-group row">
+                                    <label for="aprOrder" class="col-sm-2 col-form-label text-right"></label>
+                                    <div class="col-sm-10 text-success text-md">
+                                        <p>Kami mengirimkan kode OTP pada telegram anda. Mohon periksa telegram anda.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="aprOrder" class="col-sm-2 col-form-label text-right">Ref.</label>
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control" id="aprOrder" name="aprOrder" value="<?= $order ?>" readonly>
@@ -76,18 +82,18 @@
 <!-- sweet alert 2-->
 <script src="<?= base_url('assets/adminlte/plugin/sweetalert2/sweetalert2.min.js') ?>"></script>
 <script>
-    $(document).ready( function(){
+    $(document).ready(function() {
         var code = <?= $otp ?>;
-        $('.form').submit(function(){
+        $('.form').submit(function() {
             var otp = $('#aprOtp').val();
 
-            if(otp != code){
+            if (otp != code) {
                 Swal.fire({
-                icon: 'error',
-                title: 'Ooppss!!!',
-                text: 'OTP tidak valid',
-                showConfirmButton: true
-            })
+                    icon: 'error',
+                    title: 'Ooppss!!!',
+                    text: 'OTP tidak valid',
+                    showConfirmButton: true
+                })
                 return false;
                 $('#aprOtp').focus();
             }

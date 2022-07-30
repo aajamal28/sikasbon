@@ -88,7 +88,7 @@
           </ul>
         </li>
 
-        <li class="nav-item ">
+        <li class="nav-item <?php if($uri[0] == 'report')  echo 'menu-open' ?>">
           <a href="" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
@@ -98,7 +98,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="<?= site_url('report/cash') ?>" class="nav-link <?php if (isset($uri[1]) && ($uri[1] == 'cash'))  echo 'active' ?>">
                 <i class="far fa-circle nav-icon text-primary"></i>
                 <p>Saldo Cash</p>
               </a>
