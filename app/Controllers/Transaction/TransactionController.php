@@ -20,7 +20,7 @@ class TransactionController extends BaseController
     {
         switch ($this->session->get('role')) {
             case 'R01':
-                $status = '50';
+                $status = '';
                 $div = $this->session->get('div');
                 break;
             case 'R02':
@@ -36,7 +36,7 @@ class TransactionController extends BaseController
                 $div = '';
                 break;
             case 'R03':
-                $status = '400';
+                $status = '';
                 $div = '';
                 break;
             default:

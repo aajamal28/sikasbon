@@ -25,7 +25,8 @@ class ReportController extends BaseController
     public function showSaldo()
     {
         $data['uri'] = $this->request->uri->getSegments();
-        $data['saldo'] = $this->sldModel->getSaldo();
+        $data['saldoCash'] = $this->sldModel->getSaldo('CSH');
+        $data['saldoAdvance'] = $this->sldModel->getSaldo('ADV');
         $data['trans'] = $this->trnModel->getTransByPeriod(date('Y'), date('m'));
         return view('report/cash', $data);
     }

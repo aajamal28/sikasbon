@@ -32,4 +32,12 @@ class UserModel extends Model
                 ->getRowArray();
         }
     }
+
+    public function getUserbyRole($role,$dept){
+        return $this->table($this->table)
+                ->where('usr_role', $role)
+                ->where('usr_dvid', $dept)
+                ->get()
+                ->getRowArray();
+    }
 }

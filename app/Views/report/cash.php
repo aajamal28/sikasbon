@@ -36,8 +36,23 @@
                     <!-- small card -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h5>Saldo saat ini</h5>
-                            <h3 class="text-right">Rp. <?= number_format($saldo['sld_saldo']) ?></h3>
+                            <h5>Saldo Cash saat ini</h5>
+                            <h3 class="text-right">Rp. <?= number_format($saldoCash['sld_saldo']) ?></h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-dollar"></i>
+                        </div>
+                        <!-- <a href="#" class="small-box-footer">
+                            Details <i class="fas fa-arrow-circle-right"></i>
+                        </a> -->
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <!-- small card -->
+                    <div class="small-box bg-teal">
+                        <div class="inner">
+                            <h5>Saldo Advance saat ini</h5>
+                            <h3 class="text-right">Rp. <?= number_format($saldoAdvance['sld_saldo']) ?></h3>
                         </div>
                         <div class="icon">
                             <i class="fas fa-dollar"></i>

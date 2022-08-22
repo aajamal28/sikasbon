@@ -8,6 +8,7 @@ use App\Models\OtpModel;
 use App\Models\RequestModel;
 use App\Models\SaldoModel;
 use App\Models\TransactionModel;
+use App\Models\UserModel;
 use CodeIgniter\Session\Session;
 
 class RequestController extends BaseController
@@ -18,6 +19,7 @@ class RequestController extends BaseController
     protected $session;
     protected $sldModel;
     protected $trnModel;
+    protected $usrModel;
     //protected $uri =  $this->request->uri->getSegments();
 
     function __construct()
@@ -28,6 +30,7 @@ class RequestController extends BaseController
         $this->session = session();
         $this->sldModel = new SaldoModel();
         $this->trnModel = new TransactionModel();
+        $this->usrModel = new UserModel();
     }
 
     public function index()
@@ -117,6 +120,9 @@ class RequestController extends BaseController
             ];
             $this->reqModel->updateRequest($setConfirm, $id);
             $this->aprModel->saveApprove($dataApprove);
+            $user = $this->usrModel->getUserbyRole('R02', session()->get('div'));
+            $msg = "Hi Mr./Mrs. ".$user['usr_name']. ", ada 1 transaksi menunggu persetujuan anda. Silakan cek aplikasi siKasBon.";
+            $this->sendMessageTg($user['usr_telegram'], $msg);
             session()->setFlashdata("success", "Konfirmasi berhasil, menunggu Approval Manager");
             return redirect()->to(site_url('/transaction/overview'));
         } else {
@@ -156,6 +162,8 @@ class RequestController extends BaseController
             $token = uniqid();
             $note = "Transaksi ditolak. ( " . $post['aprNote'] . " )";
             $msg = "Proses berhasil, transaksi dibatalkan";
+            $user = $this->usrModel->getUser(session()->get('usrid'));
+            $this->sendMessageTg($user['usr_telegram'],$note);
         }
         $setApprove = [
             'rq_status' => $status
@@ -189,7 +197,8 @@ class RequestController extends BaseController
         ];
         $this->otpModel->saveOtp($dataOtp);
         $message = "Berikut OTP untuk pembayaran anda " . $otp . ". Tolong jangan beritahu siapapun!";
-        $this->sendMessageTg('453164060', $message);
+        $user  = $this->usrModel->getUser(session()->get('usrid'));
+        $this->sendMessageTg($user['usr_telegram'], $message);
         $data['otp'] = $otp;
         $data['uri'] = $this->request->uri->getSegments();
         $data['order'] = $this->reqModel->getRequestByID($id);
@@ -200,8 +209,10 @@ class RequestController extends BaseController
     public function process_paid()
     {
         $post = $this->request->getPost();
-        $saldo = $this->sldModel->getSaldo();
-        $newSaldo = $saldo['sld_saldo'] - $post['trAmount'];
+        $saldoCash = $this->sldModel->getSaldo('CSH');
+        $newSaldoCash = $saldoCash['sld_saldo'] - $post['trAmount'];
+        $saldoAdvance = $this->sldModel->getSaldo('ADV');
+        $newSaldoAdvance = $saldoAdvance['sld_saldo'] + $post['trAmount'];
         $dataTrans = [
             "trn_id" => uniqid(),
             "trn_date" => date('Y-m-d'),
@@ -213,15 +224,19 @@ class RequestController extends BaseController
             "trn_type" => 'C',
             "trn_reff" => $post['trOrder'],
             "trn_amount" => $post['trAmount'],
-            "trn_saldo" => $newSaldo
+            "trn_saldo" => $newSaldoCash
         ];
         $this->trnModel->saveTrans($dataTrans);
-        $dataSaldo = [
-            "sld_saldo" => $newSaldo
+        $dataSaldoCash = [
+            "sld_saldo" => $newSaldoCash
         ];
-        $this->sldModel->updateSaldo($dataSaldo,$saldo['sld_id']);
+        $dataSaldoAdvance = [
+            "sld_saldo" => $newSaldoAdvance
+        ];
+        $this->sldModel->updateSaldo($dataSaldoCash,$saldoCash['sld_id']);
+        $this->sldModel->updateSaldo($dataSaldoAdvance,$saldoAdvance['sld_id']);
         $setApprove = [
-            'rq_status' => '600'
+            'rq_status' => '550'
         ];
         $dataApprove = [
             'apr_id' => uniqid('apr', false),
@@ -237,5 +252,10 @@ class RequestController extends BaseController
         $this->aprModel->saveApprove($dataApprove);
         session()->setFlashdata("success", "Pembayaran berhasil dilakukan");
         return redirect()->to(site_url('/transaction/overview'));
+    }
+
+    public function print($id){
+        $data['request'] = $this->reqModel->getRequestByID($id);
+        return view('transaction/nota', $data);
     }
 }

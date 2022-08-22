@@ -78,4 +78,8 @@ class BaseController extends Controller
         $token = md5($text . $salt);
         return $token;
     }
+
+    public function sendNotif(){
+
+    }
 }
