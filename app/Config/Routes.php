@@ -47,15 +47,17 @@ $routes->group('master', ['filter' => 'auth'] ,function ($routes) {
 
 $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
     $routes->add('overview', 'Transaction\TransactionController::index');
-    $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
-    $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
-    $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
-    $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
-   
-    
-
+    // $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
+    // $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
+    // $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
+    // $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
     $routes->group('request', function ($routes) {
         $routes->add('/', 'Transaction\RequestController::index');
+        //$routes->add('overview', 'Transaction\TransactionController::index');
+        $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
+        $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
+        $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
+        $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
         $routes->post('save', 'Transaction\RequestController::post');
         $routes->post('process', 'Transaction\RequestController::process_approval');
         $routes->post('paidprocess', 'Transaction\RequestController::process_paid');
@@ -63,7 +65,7 @@ $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
 
     $routes->group('refund', function ($routes) {
         $routes->add('/', 'Transaction\RefundController::index');
-        $routes->add('/(:segment)/approve', 'Transaction\RefundController::detail/$1');
+        $routes->add('(:segment)/create', 'Transaction\RefundController::create/$1');
         $routes->post('save', 'Transaction\RefundController::post');
     });
 });

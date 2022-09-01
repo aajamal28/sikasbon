@@ -17,15 +17,16 @@
     <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugin/sweetalert2/sweetalert2.min.css') ?>" />
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" background="<?= base_url('assets/img/logo.png') ?>">
     <div class="login-box">
-        <div class="login-logo">
-            <a href="<?= site_url() ?>"><b>siKasBon</b> Apps.</a>
-        </div>
+        <!-- <div class="login-logo">
+            <a href="<?= site_url() ?>" class="text-primary"><b>siKasBon</b> Apps.</a>
+        </div> -->
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <h2 class="login-box-msg"><b>siKasBon</b> Apps.</h2>
+                <p class="login-box-msg">Silakan login untuk memulai sesi anda</p>
 
                 <form action="<?= base_url('auth/verify') ?>" method="post">
                     <?= csrf_field() ?>
