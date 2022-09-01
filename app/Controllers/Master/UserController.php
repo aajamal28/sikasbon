@@ -75,6 +75,8 @@ class UserController extends BaseController
             "usr_password" => password_hash($post['usrId'],PASSWORD_DEFAULT)
         ];
         $this->usrModel->saveUser($dataUser);
+        $msg = "Halo Bapak/Ibu ".$post['usrName'].". Anda telah terdaftar di system siKasBon. User dan password adalah *NIK* ada. Klik link berikut untuk login : [https://apps.komporsumeng.my.id/public/]";
+        $this->sendMessageTg($post['usrTelegram'], $msg);
         session()->setFlashdata("success", "User berhasil disimpan!!!");
 		return redirect()->to(site_url('/master/user/list'));
     }

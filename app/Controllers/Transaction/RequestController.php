@@ -39,22 +39,28 @@ class RequestController extends BaseController
         //$data['noRequest'] = $this->reqModel->getNomorRequest();
         $data['user'] = $this->session->get('usrid');
         $data['dvid'] = $this->session->get('div');
+        // $data['tr_type'] = [
+        //     [
+        //         "code" => "100",
+        //         "name" => "Entertaint"
+        //     ],
+        //     [
+        //         "code" => "200",
+        //         "name" => "Non Entertaint"
+        //     ],
+        //     [
+        //         "code" => "300",
+        //         "name" => "Transport Cash"
+        //     ],
+        //     [
+        //         "code" => "400",
+        //         "name" => "Transport E-Toll"
+        //     ],
+        // ];
         $data['tr_type'] = [
             [
                 "code" => "100",
                 "name" => "Entertaint"
-            ],
-            [
-                "code" => "200",
-                "name" => "Non Entertaint"
-            ],
-            [
-                "code" => "300",
-                "name" => "Transport Cash"
-            ],
-            [
-                "code" => "400",
-                "name" => "Transport E-Toll"
             ],
         ];
         return view('transaction/request', $data);
