@@ -87,9 +87,9 @@ class RequestController extends BaseController
             "rq_status" => '50'
         ];
         //print_r($dataRequest);
-        $message = "Ada Permintaan kasbon baru dengan nomor '$rqno' sebesar Rp. " . number_format($post['trCredit']) . " untuk " . $post['trDesc'];
+        //$message = "Ada Permintaan kasbon baru dengan nomor '$rqno' sebesar Rp. " . number_format($post['trCredit']) . " untuk " . $post['trDesc'];
         $this->reqModel->postRequest($dataRequest);
-        $this->sendMessageTg('5494097289', $message);
+        //$this->sendMessageTg('5494097289', $message);
         session()->setFlashdata("success", "Request anda berhasil disimpan dengan Nomor " . $rqno);
         return redirect()->to(site_url('/transaction/overview'));
     }
@@ -127,7 +127,7 @@ class RequestController extends BaseController
             $this->reqModel->updateRequest($setConfirm, $id);
             $this->aprModel->saveApprove($dataApprove);
             $user = $this->usrModel->getUserbyRole('R02', session()->get('div'));
-            $msg = "Hi Mr./Mrs. ".$user['usr_name']. ", ada 1 transaksi menunggu persetujuan anda. Silakan cek aplikasi siKasBon.";
+            $msg = "Hi Mr./Mrs. " . $user['usr_name'] . ", ada 1 transaksi menunggu persetujuan anda. Silakan cek aplikasi siKasBon. [https://apps.komporsumeng.my.id/public/]";
             $this->sendMessageTg($user['usr_telegram'], $msg);
             session()->setFlashdata("success", "Konfirmasi berhasil, menunggu Approval Manager");
             return redirect()->to(site_url('/transaction/overview'));
@@ -143,7 +143,8 @@ class RequestController extends BaseController
             ];
             $this->otpModel->saveOtp($dataOtp);
             $message = "Berikut OTP untuk approval anda " . $otp . ". Tolong jangan beritahu siapapun!";
-            $this->sendMessageTg('5494097289', $message);
+            $user = $this->usrModel->getUser(session()->get('usrid'));
+            $this->sendMessageTg($user['usr_telegram'], $message);
             $data['otp'] = $otp;
             return view('transaction\approve', $data);
         }
@@ -153,10 +154,24 @@ class RequestController extends BaseController
     {
         $post = $this->request->getPost();
         $req = $this->reqModel->getRequestByID($post['aprOrder']);
+        $curRole = session()->get('role');
+        switch ($curRole) {
+            case "R02":
+                $nextRole = "R05";
+                $userApr = $this->usrModel->getUserbyRole($nextRole, '');
+                break;
+            case "R05":
+                $nextRole = "R06";
+                $userApr = $this->usrModel->getUserbyRole($nextRole, '');
+                break;
+            default:
+                $nextRole = "R03";
+                $userApr = $this->usrModel->getUserbyRole($nextRole, '');
+        }
         if ($post['mode'] == 'approve') {
             $status = $req['rq_status'] + 100;
             $token = $this->generateToken($post['aprOtp']);
-            $note = "Transaksi disetujui oleh Mr./Mrs. " . session()->get('name');
+            $note = "Request Kasbon Anda sudah disetujui oleh Mr./Mrs. " . session()->get('name');
             $msg = "Proses berhasil, Menunggu Persertujuan berikutnya.";
         } elseif ($post['mode'] == 'cancel') {
             $status = $req['rq_status'] + 30;
@@ -168,9 +183,11 @@ class RequestController extends BaseController
             $token = uniqid();
             $note = "Transaksi ditolak. ( " . $post['aprNote'] . " )";
             $msg = "Proses berhasil, transaksi dibatalkan";
-            $user = $this->usrModel->getUser(session()->get('usrid'));
-            $this->sendMessageTg($user['usr_telegram'],$note);
+            //$user = $this->usrModel->getUser(session()->get('usrid'));
+            //$this->sendMessageTg($user['usr_telegram'],$note);
         }
+
+
         $setApprove = [
             'rq_status' => $status
         ];
@@ -186,7 +203,23 @@ class RequestController extends BaseController
         ];
         $this->reqModel->updateRequest($setApprove, $post['aprOrder']);
         $this->aprModel->saveApprove($dataApprove);
-        session()->setFlashdata("success", $msg);
+
+        //pesan ke approval berikutnya
+        if(session()->get('usrid') == "R06"){
+            $msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " yang sudah disetujui dan menunggu pencairan!. Silakan cek aplikasi siKasBon [https://apps.komporsumeng.my.id/public/] .";
+        }else{
+            $msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " menunggu persetujuan anda!. Silakan cek aplikasi siKasBon [https://apps.komporsumeng.my.id/public/]";
+        }
+        //$msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " menunggu persetujuan anda!.";
+        $this->sendMessageTg($userApr['usr_telegram'], $msg);
+
+        //pesan ke requester
+        $userReq = $this->usrModel->getUser($req['rq_usrid']);
+        $this->sendMessageTg($userReq['usr_telegram'], $note);
+
+
+
+        session()->setFlashdata("success", "Approval berhasil. Terima kasih");
         return redirect()->to(site_url('/transaction/overview'));
     }
 
@@ -239,8 +272,8 @@ class RequestController extends BaseController
         $dataSaldoAdvance = [
             "sld_saldo" => $newSaldoAdvance
         ];
-        $this->sldModel->updateSaldo($dataSaldoCash,$saldoCash['sld_id']);
-        $this->sldModel->updateSaldo($dataSaldoAdvance,$saldoAdvance['sld_id']);
+        $this->sldModel->updateSaldo($dataSaldoCash, $saldoCash['sld_id']);
+        $this->sldModel->updateSaldo($dataSaldoAdvance, $saldoAdvance['sld_id']);
         $setApprove = [
             'rq_status' => '550'
         ];
@@ -252,7 +285,7 @@ class RequestController extends BaseController
             'apr_token' => $post['trOtp'],
             'apr_stfrom' => '500',
             'apr_stto' => '600',
-            'apr_note' => "Pembayaran sudah dilakukan oleh Kasir [ ".session()->get('name')." ]"
+            'apr_note' => "Pembayaran sudah dilakukan oleh Kasir [ " . session()->get('name') . " ]"
         ];
         $this->reqModel->updateRequest($setApprove, $post['trOrderId']);
         $this->aprModel->saveApprove($dataApprove);
@@ -260,7 +293,8 @@ class RequestController extends BaseController
         return redirect()->to(site_url('/transaction/overview'));
     }
 
-    public function print($id){
+    public function print($id)
+    {
         $data['request'] = $this->reqModel->getRequestByID($id);
         return view('transaction/nota', $data);
     }

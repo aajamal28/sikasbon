@@ -33,11 +33,19 @@ class UserModel extends Model
         }
     }
 
-    public function getUserbyRole($role,$dept){
-        return $this->table($this->table)
+    public function getUserbyRole($role,$dept = false){
+        if ($dept == false){
+            return $this->table($this->table)
+                ->where('usr_role', $role)
+                ->get()
+                ->getRowArray();
+        }else{
+            return $this->table($this->table)
                 ->where('usr_role', $role)
                 ->where('usr_dvid', $dept)
                 ->get()
                 ->getRowArray();
+        }
+        
     }
 }
