@@ -45,6 +45,6 @@ class TransactionController extends BaseController
         }
         $data['uri'] = $this->request->uri->getSegments();
         $data['request'] = $this->reqModel->getRequest($status, $div);
-        return view('transaction\overview', $data);
+        return view('transaction/overview', $data);
     }
 }

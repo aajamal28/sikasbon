@@ -57,7 +57,7 @@ class RequestController extends BaseController
                 "name" => "Transport E-Toll"
             ],
         ];
-        return view('transaction\request', $data);
+        return view('transaction/request', $data);
     }
 
     public function post()
