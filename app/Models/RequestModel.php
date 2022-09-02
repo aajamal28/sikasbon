@@ -14,7 +14,7 @@ class RequestModel extends Model
 
     public function getNomorRequest()
     {
-        $sql = $this->db->query("select max(rq_no) as maxNo, rq_year from " . $this->table . ";");
+        $sql = $this->db->query("select max(rq_no) as maxNo, rq_year from " . $this->table . " group by rq_year;");
         $no =  $sql->getRowArray();
         //[no_trans] => P20211200002
 

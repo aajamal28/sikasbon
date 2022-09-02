@@ -79,7 +79,4 @@ class BaseController extends Controller
         return $token;
     }
 
-    public function sendNotif(){
-
-    }
 }
