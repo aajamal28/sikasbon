@@ -18,17 +18,18 @@ class RequestModel extends Model
         $no =  $sql->getRowArray();
         //[no_trans] => P20211200002
 
-        if ($no['maxNo'] == null) {
-            $no = sprintf("%04s", '1');
-            $rqno = $no;
-        } else {
+        if (isset($no['maxNo'])) {
             if ($no['rq_year'] == date('Y')) {
                 $newno = $no['maxNo'] + 1;
                 $rqno = sprintf("%04s", $newno);
             } else {
                 $rqno = sprintf("%04s", '1');
             }
+        } else {
+            $no = sprintf("%04s", '1');
+            $rqno = $no;
         }
+
         $trno = $rqno;
         return $trno;
     }
