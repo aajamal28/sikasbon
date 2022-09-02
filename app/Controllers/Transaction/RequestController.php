@@ -107,7 +107,7 @@ class RequestController extends BaseController
         $data['mode'] = $mode;
 
         if ($mode == 'cancel' || $mode == 'reject') {
-            return view('transaction\reject', $data);
+            return view('transaction/reject', $data);
         } elseif ($mode == 'confirm') {
             $req = $this->reqModel->getRequestByID($id);
             $status = $req['rq_status'] + 50;
@@ -146,7 +146,7 @@ class RequestController extends BaseController
             $user = $this->usrModel->getUser(session()->get('usrid'));
             $this->sendMessageTg($user['usr_telegram'], $message);
             $data['otp'] = $otp;
-            return view('transaction\approve', $data);
+            return view('transaction/approve', $data);
         }
     }
 
