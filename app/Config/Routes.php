@@ -47,6 +47,7 @@ $routes->group('master', ['filter' => 'auth'] ,function ($routes) {
 
 $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
     $routes->add('overview', 'Transaction\TransactionController::index');
+    $routes->add('nomor', 'Transaction\RequestController::nomor');
     // $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
      $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
     // $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');

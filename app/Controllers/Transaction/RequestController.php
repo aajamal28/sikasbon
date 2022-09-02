@@ -298,4 +298,10 @@ class RequestController extends BaseController
         $data['request'] = $this->reqModel->getRequestByID($id);
         return view('transaction/nota', $data);
     }
+
+    public function nomor()
+    {
+        $data  = $this->reqModel->getNomorRequest();
+        return $data;
+    }
 }
