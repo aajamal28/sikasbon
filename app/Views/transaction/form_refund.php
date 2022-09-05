@@ -81,7 +81,7 @@
                             <h3 class="card-title">FORM NORMATIF BIAYA ENTERTAINT</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form form-horizontal" method="POST" action="" enctype="multipart/form-data">
+                            <form class="form form-horizontal" method="POST" action="<?= base_url(); ?>/transaction/refund/post" enctype="multipart/form-data">
                                 <div class="table-responsive">
                                     <table border="1" width="100%">
                                         <thead>

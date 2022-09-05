@@ -205,9 +205,9 @@ class RequestController extends BaseController
         $this->aprModel->saveApprove($dataApprove);
 
         //pesan ke approval berikutnya
-        if(session()->get('usrid') == "R06"){
+        if (session()->get('role') == "R06") {
             $msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " yang sudah disetujui dan menunggu pencairan!. Silakan cek aplikasi siKasBon [https://apps.komporsumeng.my.id/public/] .";
-        }else{
+        } else {
             $msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " menunggu persetujuan anda!. Silakan cek aplikasi siKasBon [https://apps.komporsumeng.my.id/public/]";
         }
         //$msg = "Ada 1 Kasbon senilai Rp. " . number_format($req['rq_amount']) . " menunggu persetujuan anda!.";
@@ -215,10 +215,11 @@ class RequestController extends BaseController
 
         //pesan ke requester
         $userReq = $this->usrModel->getUser($req['rq_usrid']);
-        $this->sendMessageTg($userReq['usr_telegram'], $note);
-
-
-
+        if (session()->get('role') == "R06") {
+            $this->sendMessageTg($userReq['usr_telegram'], "Permintaan anda sudah disetujui. Silakan menuju Kasir untuk Pencairan. Terima kasih");
+        } else {
+            $this->sendMessageTg($userReq['usr_telegram'], $note);
+        }
         session()->setFlashdata("success", "Approval berhasil. Terima kasih");
         return redirect()->to(site_url('/transaction/overview'));
     }
@@ -297,11 +298,5 @@ class RequestController extends BaseController
     {
         $data['request'] = $this->reqModel->getRequestByID($id);
         return view('transaction/nota', $data);
-    }
-
-    public function nomor()
-    {
-        $data  = $this->reqModel->getNomorRequest();
-        return $data;
     }
 }

@@ -36,7 +36,7 @@ $routes->post('/auth/verify', 'AuthController::auth');
 $routes->get('/auth/logout', 'AuthController::logout');
 
 //custom routes
-$routes->group('master', ['filter' => 'auth'] ,function ($routes) {
+$routes->group('master', ['filter' => 'auth'], function ($routes) {
     $routes->group('user', function ($routes) {
         $routes->add('list', 'Master\UserController::index');
         $routes->add('register', 'Master\UserController::register');
@@ -45,19 +45,18 @@ $routes->group('master', ['filter' => 'auth'] ,function ($routes) {
     });
 });
 
-$routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
+$routes->group('transaction', ['filter' => 'auth'], function ($routes) {
     $routes->add('overview', 'Transaction\TransactionController::index');
-    $routes->add('nomor', 'Transaction\RequestController::nomor');
     // $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
-     $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
-    // $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
+    $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
+    $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
     $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
     $routes->group('request', function ($routes) {
         $routes->add('/', 'Transaction\RequestController::index');
         //$routes->add('overview', 'Transaction\TransactionController::index');
         $routes->add('request/(:segment)', 'Transaction\RequestController::detail/$1');
         $routes->add('request/paid/(:segment)', 'Transaction\RequestController::paid/$1');
-        $routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
+        //$routes->add('request/print/(:segment)', 'Transaction\RequestController::print/$1');
         $routes->add('request/(:segment)/(:segment)', 'Transaction\RequestController::approve/$1/$2');
         $routes->post('save', 'Transaction\RequestController::post');
         $routes->post('process', 'Transaction\RequestController::process_approval');
@@ -67,11 +66,11 @@ $routes->group('transaction', ['filter' => 'auth'] ,function ($routes) {
     $routes->group('refund', function ($routes) {
         $routes->add('/', 'Transaction\RefundController::index');
         $routes->add('(:segment)/create', 'Transaction\RefundController::create/$1');
-        $routes->post('save', 'Transaction\RefundController::post');
+        $routes->post('post', 'Transaction\RefundController::post');
     });
 });
 
-$routes->group('report', ['filter' => 'auth'] ,function ($routes) {
+$routes->group('report', ['filter' => 'auth'], function ($routes) {
     $routes->add('cash', 'Report\ReportController::showSaldo');
 });
 

@@ -29,4 +29,10 @@ class RefundController extends BaseController
         $data['order'] = $this->reqModel->getRequestByID($id);
         return view('transaction/form_refund', $data);
     }
+
+    public function post(){
+        $post = $this->request->getPost();
+
+        
+    }
 }
